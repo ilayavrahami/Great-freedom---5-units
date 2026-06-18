@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח המשימות המושלם לחופש הגדול ☀️ (5 יחידות)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            --bg-gradient-start: #e0f2fe;
+            --bg-gradient-end: #f0fdf4;
+            --primary-color: #0284c7;
+            --primary-dark: #0369a1;
+            --accent-work: #f0fdf4;
+            --accent-work-border: #bbf7d0;
+            --accent-busy: #fff7ed;
+            --accent-busy-border: #fed7aa;
+            --accent-free: #fef2f2;
+            --accent-free-border: #fecaca;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Assistant', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 50px;
+            height: 24px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #34d399, #059669);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 50px;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e293b;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            color: var(--text-main);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .dashboard-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .week-section {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .week-title {
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+            border-right: 5px solid var(--primary-color);
+            padding-right: 10px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 15px;
+            padding: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 140px;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .day-card.type-work {
+            background-color: var(--accent-work);
+            border-color: var(--accent-work-border);
+        }
+
+        .day-card.type-busy {
+            background-color: var(--accent-busy);
+            border-color: var(--accent-busy-border);
+        }
+
+        .day-card.type-free {
+            background-color: var(--accent-free);
+            border-color: var(--accent-free-border);
+        }
+
+        .day-card.completed {
+            opacity: 0.65;
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        .day-card.completed .day-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .day-date {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+        }
+
+        .day-name {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.6);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .day-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .checkbox-container input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #10b981;
+        }
+
+        .hint-text {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            text-align: right;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .modal-header-info {
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 15px;
+        }
+
+        .modal-date-tag {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .modal-title {
+            color: var(--text-main);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .modal-body {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #334155;
+            margin-bottom: 25px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-done-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 1rem;
+        }
+
+        .modal-done-btn:hover {
+            background: #059669;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.7rem; }
+            body { padding: 10px; }
+            .days-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>☀️ לו"ז החופש הגדול המושלם שלי</h1>
+        <p class="subtitle">מעקב משימות וגישה מהירה לקבצים ל-5 יחידות</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">0% הושלם</div>
+        </div>
+    </header>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterDays('all', this)">הכל ללא סינון</button>
+        <button class="filter-btn" onclick="filterDays('work', this)">ימי עבודה ולמידה 📐</button>
+        <button class="filter-btn" onclick="filterDays('free', this)">ימי חופש ומנוחה 🥳</button>
+    </div>
+
+    <div class="dashboard-container" id="dashboard">
+        <!-- Content will be generated by JS -->
+    </div>
+
+    <!-- Beautiful Interactivity Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="toggleModal(false)">&times;</button>
+            <div class="modal-header-info">
+                <div class="modal-date-tag" id="modalDateTag"></div>
+                <div class="modal-title" id="modalTitle"></div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="modal-done-btn" id="modalDoneBtn">סומן כבוצע! השלמתי את היום הזה</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scheduleData = [{"week_title": "שבוע 1: התחלה רגועה ואלגברה בסיסית", "days": [{"id": "day_30_06", "date": "30.06", "day_name": "יום שלישי", "title": "🥳 שבת חופש!", "details": "חוגגים את היום הראשון של החופש הגדול.", "type": "free"}, {"id": "day_01_07", "date": "01.07", "day_name": "יום רביעי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 2, שאלה 1 (צמצום שברים אלגבריים, סעיפים א', ב', ג', ד')<br><br><b>אנגלית:</b> קריאת פרק 1 מהספר הנדרש (The War That Saved My Life).", "type": "work"}, {"id": "day_02_07", "date": "02.07", "day_name": "יום חמישי", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 2, שאלה 1 (המשך סעיפים ה', ו', ז')<br><br><b>עברית:</b> שאלה 1 (טבלת הפעלים: השלמת 5 השורות הראשונות, מהפועל 'הִתְלַבְּשׁוּ' ועד הפועל 'הוּזְמְנוּ').", "type": "work"}, {"id": "day_03_07", "date": "03.07", "day_name": "יום שישי", "title": "🏖️ שבת חופש!", "details": "סוף שבוע רגוע ומנוחה.", "type": "free"}, {"id": "day_04_07", "date": "04.07", "day_name": "יום שבת", "title": "🍉 שבת חופש!", "details": "ליהנות מסוף השבוע!", "type": "free"}, {"id": "day_05_07", "date": "05.07", "day_name": "יום ראשון", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 2, שאלה 2 (חיבור וחיסור שברים, סעיפים א', ב', ג', ד')<br><br><b>אנגלית:</b> פתרון אנסין מספר 1 מחוברת האנסינים (Module E).", "type": "work"}]}, {"week_title": "שבוע 2: כפל שברים ומשוואות ריבועיות", "days": [{"id": "day_06_07", "date": "06.07", "day_name": "יום שני", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 2, שאלה 3 (כפל ופישוט שברים, סעיפים א', ב', ג', ד')<br><br><b>עברית:</b> שאלה 1 (המשך טבלת הפעלים: 6 השורות הבאות, מהפועל 'מְבֻשָּׁל' ועד הפועל 'נִזְהַרְנוּ').", "type": "work"}, {"id": "day_07_07", "date": "07.07", "day_name": "יום שלישי", "title": "🍦 שבת חופש!", "details": "יום חופש, זמן לגלידה ומנוחה!", "type": "free"}, {"id": "day_08_07", "date": "08.07", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד (יום עמוס!)", "details": "<b>מתמטיקה בלבד:</b> עמוד 3, נושא המשוואה הריבועית: שאלה 1 (פתרון משוואות ריבועיות ונוסחת השורשים, סעיפים א', ב', ג', ד').", "type": "busy"}, {"id": "day_09_07", "date": "09.07", "day_name": "יום חמישי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 3, שאלה 2 (משוואות עם שברים, סעיפים א', ב', ג', ד')<br><br><b>אנגלית:</b> קריאת פרק 2 מהספר הנדרש.", "type": "work"}, {"id": "day_10_07", "date": "10.07", "day_name": "יום שישי", "title": "🌊 שבת חופש!", "details": "סוף שבוע הגיע - זמן לים או לבריכה!", "type": "free"}, {"id": "day_11_07", "date": "11.07", "day_name": "יום שבת", "title": "☀️ שבת חופש!", "details": "יום מנוחה ובילויים.", "type": "free"}, {"id": "day_12_07", "date": "12.07", "day_name": "יום ראשון", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה:</b> עמוד 3, נושא מערכת משוואות ממעלה שנייה: שאלה 1 (פתרון מערכות וזוגות סדורים, סעיפים א', ב', ג', ד').", "type": "work"}]}, {"week_title": "שבוע 3: אלגברה מורכבת (יואל גבע)", "days": [{"id": "day_13_07", "date": "13.07", "day_name": "יום שני", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 4 (טכניקה אלגברית - יואל גבע): שאלות 1, 2, 3, 4<br><br><b>עברית:</b> שאלה 2 (נושא תחביר: ניתוח סוגי משפטים – משפטים 1 עד 6).", "type": "work"}, {"id": "day_14_07", "date": "14.07", "day_name": "יום שלישי", "title": "🎮 שבת חופש!", "details": "יום חופש! זמן למשחקים, חברים ומנוחה.", "type": "free"}, {"id": "day_15_07", "date": "15.07", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד (עמוד ארוך!)", "details": "<b>מתמטיקה בלבד:</b> עמוד 4, שאלות 5 ו-6 (תחום הצבה ופתרון) + שאלות 7, 8, 9, 10 (מערכות משוואות בדרכים שונות).", "type": "busy"}, {"id": "day_16_07", "date": "16.07", "day_name": "יום חמישי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 4, שאלות 11, 12, 13, 14, 15, 16 (משוואות ריבועיות שונות)<br><br><b>אנגלית:</b> פתרון אנסין מספר 2 מחוברת האנסינים (רמת Module E).", "type": "work"}, {"id": "day_17_07", "date": "17.07", "day_name": "יום שישי", "title": "🏝️ שבת חופש!", "details": "סוף שבוע רגוע ומנוחה מוחלטת.", "type": "free"}, {"id": "day_18_07", "date": "18.07", "day_name": "יום שבת", "title": "🍹 שבת חופש!", "details": "יום מנוחה וכיף.", "type": "free"}, {"id": "day_19_07", "date": "19.07", "day_name": "יום ראשון", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה בלבד (משוואות רציונליות מורכבות):</b> עמוד 4, שאלות 17, 18 + עמוד 5, שאלות 19, 20, 21, 22 (פתרון בעזרת פירוק לגורמים ותחום הצבה).", "type": "work"}]}, {"week_title": "שבוע 4: דקדוק באנגלית ומעבר לגיאומטריה", "days": [{"id": "day_20_07", "date": "20.07", "day_name": "יום שני", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 5, שאלות 23, 24, 25, 26 (משוואות רציונליות ארוכות)<br><br><b>עברית:</b> שאלה 2 (תחביר: המשך ניתוח משפטים – משפטים 7 עד 12).", "type": "work"}, {"id": "day_21_07", "date": "21.07", "day_name": "יום שלישי", "title": "🍿 שבת חופש!", "details": "יום חופש! זמן לסרט טוב ומנוחה.", "type": "free"}, {"id": "day_22_07", "date": "22.07", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד (סיום אלגברה!)", "details": "<b>מתמטיקה בלבד:</b> עמוד 5, שאלות 27 עד 32 (צמצום, כפל וחילוק שברים) + שאלות 33 עד 38 (מערכות משוואות ריבועיות).<br>🎉 זהו סיום חלק האלגברה הארוך של יואל גבע!", "type": "busy"}, {"id": "day_23_07", "date": "23.07", "day_name": "יום חמישי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית (דקדוק)", "details": "<b>מתמטיקה:</b> עמוד 6 (נושא גיאומטריה - משולש ישר זווית): מעבר על משפט ה-30 מעלות והתיכון ליתר + פתרון שאלה 1 (סעיפים א', ב', ג').<br><br><b>אנגלית:</b> תרגול הווה פשוט ומתמשך. לחץ כאן כדי לפתוח את הקבצים:<br><br><a href='worksheet_47276.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 1 (47276)</a><br><a href='worksheet_191221.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 2 (191221)</a>", "type": "work"}, {"id": "day_24_07", "date": "24.07", "day_name": "יום שישי", "title": "🏄‍♂️ שבת חופש!", "details": "סוף שבוע הגיע, זמן לגלוש ולנוח!", "type": "free"}, {"id": "day_25_07", "date": "25.07", "day_name": "יום שבת", "title": "🕶️ שבת חופש!", "details": "יום מנוחה מלא.", "type": "free"}, {"id": "day_26_07", "date": "26.07", "day_name": "יום ראשון", "title": "📐 מתמטיקה + 🇬🇧 אנגלית (דקדוק)", "details": "<b>מתמטיקה:</b> עמוד 6–7, שאלה 2 (הוכחות וחישובים במשולש שווה שוקיים, סעיפים א', ב', ג', ד').<br><br><b>אנגלית:</b> סיום נושא הווה פשוט ומתמשך. לחץ לפתיחת הקבצים:<br><br><a href='worksheet_56248.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 3 (56248)</a><br><a href='worksheet_820890.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 4 (820890)</a>", "type": "work"}]}, {"week_title": "שבוע 5: מרובעים (משפחת המקביליות)", "days": [{"id": "day_27_07", "date": "27.07", "day_name": "יום שני", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 7, שאלה 3 (טרפז ישר זווית, סעיפים א', ב', ג', ד') ושאלה 4 (א', ב', ג', ד')<br><br><b>עברית:</b> שאלה 2 (תחביר: משפטים 13 עד 18 והשלמת הנושא).", "type": "work"}, {"id": "day_28_07", "date": "28.07", "day_name": "יום שלישי", "title": "🍕 שבת חופש!", "details": "יום חופש! תתפנק על פיצה טובה.", "type": "free"}, {"id": "day_29_07", "date": "29.07", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה בלבד:</b> עמוד 8–9: קריאת משפטי המקבילית, המלבן, המעוין והריבוע + פתרון שאלה 1 ושאלה 2 (הוכחת מלבן ומקבילית, סעיפים א', ב', ג').", "type": "busy"}, {"id": "day_30_07", "date": "30.07", "day_name": "יום חמישי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 9–10, שאלה 3 (הוכחות טרפז, סעיפים א', ב', ג') ושאלה 4 (חפיפות במקבילית, סעיפים א', ב', ג')<br><br><b>אנגלית:</b> קריאת פרק 3 מהספר הנדרש.", "type": "work"}, {"id": "day_31_07", "date": "31.07", "day_name": "יום שישי", "title": "🏊‍♂️ שבת חופש!", "details": "סוף שבוע הגיע! זמן לבריכה.", "type": "free"}, {"id": "day_01_08", "date": "01.08", "day_name": "יום שבת", "title": "🏕️ שבת חופש!", "details": "ליהנות מיום שבת רגוע.", "type": "free"}, {"id": "day_02_08", "date": "02.08", "day_name": "יום ראשון", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה:</b> עמוד 10, שאלה 5 (הוכחת ריבוע ומעוין באלכסונים) + עמוד 11 (נושא קטע אמצעים במשולש: לימוד המשפט ופתרון שאלות 1, 2, 3).", "type": "work"}]}, {"week_title": "שבוע 6: קטע אמצעים וגיאומטריה אנליטית", "days": [{"id": "day_03_08", "date": "03.08", "day_name": "יום שני", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 12–13 (תרגול קטע אמצעים במשולש ובטרפז, שאלות 4, 5, 6)<br><br><b>עברית:</b> שאלה 3 (נושא חלקי דיבר: זיהוי שמות עצם, תארים ופעלים במשפטים 1 עד 10).", "type": "work"}, {"id": "day_04_08", "date": "04.08", "day_name": "יום שלישי", "title": "🚴‍♂️ שבת חופש!", "details": "יום חופש! צא לרכיבה על אופניים או סתם לנוח.", "type": "free"}, {"id": "day_05_08", "date": "05.08", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד (יום עמוס!)", "details": "<b>מתמטיקה בלבד:</b> עמודים 14, 15, 16 (פתרון שאלות סיכום והוכחות על מרובעים וקטעי אמצעים - יואל גבע).", "type": "busy"}, {"id": "day_06_08", "date": "06.08", "day_name": "יום חמישי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 17–18 (נושא גיאומטריה אנליטית: מציאת שיפוע, משוואת ישר וחיתוך עם הצירים, שאלות 1, 2, 3)<br><br><b>אנגלית:</b> קריאת פרק 4 (ואחרון) מהספר הנדרש.", "type": "work"}, {"id": "day_07_08", "date": "07.08", "day_name": "יום שישי", "title": "🛥️ שבת חופש!", "details": "סוף שבוע של טיולים וכיף.", "type": "free"}, {"id": "day_08_08", "date": "08.08", "day_name": "יום שבת", "title": "🧘‍♂️ שבת חופש!", "details": "מנוחה וטעינת מצברים לשבוע החדש.", "type": "free"}, {"id": "day_09_08", "date": "09.08", "day_name": "יום ראשון", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה:</b> עמוד 19–20 (גיאומטריה אנליטית: מרחק בין נקודות - דיסטנס, ואמצע קטע, שאלות 4, 5, 6).", "type": "work"}]}, {"week_title": "שבוע 7: סיום גיאומטריה אנליטית ותחילת פרבולות", "days": [{"id": "day_10_08", "date": "10.08", "day_name": "יום שני", "title": "📐 מתמטיקה + ✍️ עברית", "details": "<b>מתמטיקה:</b> עמוד 21–22 (חישובי שטחי משולשים ומרובעים במערכת צירים, שאלות 7, 8, 9)<br><br><b>עברית:</b> שאלה 4 (נושא שם המספר: התאמת זכר/נקבה בסעיפים 1 עד 6).<br>🎉 <b>מזל טוב! סיימת לחלוטין את העבודה בעברית!</b>", "type": "work"}, {"id": "day_11_08", "date": "11.08", "day_name": "יום שלישי", "title": "🥞 שבת חופש!", "details": "יום חופש! תכין פנקייקים טעימים בבוקר.", "type": "free"}, {"id": "day_12_08", "date": "12.08", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד (סיכום אנליטית)", "details": "<b>מתמטיקה בלבד:</b> עמודים 23, 24, 25 (פתרון שאלות מסכמות ומורכבות בגיאומטריה אנליטית ברמת 5 יחידות).", "type": "busy"}, {"id": "day_13_08", "date": "13.08", "day_name": "יום חמישי", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה:</b> עמוד 26–27 (נושא חדש: פרבולה וישר - מציאת קודקוד הפרבולה, נקודות חיתוך ותחומי עלייה/ירידה, שאלות 1, 2, 3).", "type": "work"}, {"id": "day_14_08", "date": "14.08", "day_name": "יום שישי", "title": "🛝 שבת חופש!", "details": "סוף שבוע רגוע ומפנק.", "type": "free"}, {"id": "day_15_08", "date": "15.08", "day_name": "יום שבת", "title": "🎈 שבת חופש!", "details": "יום מנוחה ובילוי.", "type": "free"}, {"id": "day_16_08", "date": "16.08", "day_name": "יום ראשון", "title": "📐 מתמטיקה + 🇬🇧 אנגלית (דקדוק)", "details": "<b>מתמטיקה:</b> עמוד 28–29 (פתרון אי-שוויונות ריבועיים בעזרת גרף הפרבולה, תחומי חיוביות ושליליות, שאלות 4, 5, 6).<br><br><b>אנגלית:</b> תרגול עבר פשוט ומתמשך (Past Simple & Progressive). לחץ לפתיחת הקבצים:<br><br><a href='worksheet_673546.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 5 (673546)</a><br><a href='worksheet_1000521.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 6 (1000521)</a>", "type": "work"}]}, {"week_title": "שבוע 8: הזזות פונקציות ומבחני סיכום", "days": [{"id": "day_17_08", "date": "17.08", "day_name": "יום שני", "title": "📐 מתמטיקה בלבד", "details": "<b>מתמטיקה:</b> עמוד 30–31 (נושא הזזות אופקיות ואנכיות של פונקציות: מעבר מ-(f(x ל-(f(x+c ושינוי נקודות הקיצון, שאלות 7, 8, 9).", "type": "work"}, {"id": "day_18_08", "date": "18.08", "day_name": "יום שלישי", "title": "😴 שבת חופש!", "details": "יום חופש! לישון עד מאוחר ולנוח.", "type": "free"}, {"id": "day_19_08", "date": "19.08", "day_name": "יום רביעי", "title": "📐 מתמטיקה בלבד (תרגול מתקדם)", "details": "<b>מתמטיקה בלבד:</b> עמודים 32, 33 (פתרון שאלות גרפיות משולבות ומציאת תחומי חיוביות/שליליות מורכבים לפונקציות מוזזות).", "type": "busy"}, {"id": "day_20_08", "date": "20.08", "day_name": "יום חמישי", "title": "📐 מתמטיקה + 🇬🇧 אנגלית", "details": "<b>מתמטיקה:</b> עמוד 34–35 (מבחן סיכום עצמי ומרוכז של נושאי הפונקציות והפרבולות)<br><br><b>אנגלית:</b> פתרון אנסין מספר 3 מחוברת האנסינים (Module E).", "type": "work"}, {"id": "day_21_08", "date": "21.08", "day_name": "יום שישי", "title": "🛒 שבת חופש!", "details": "סוף שבוע, זמן קניות ובילוי עם משפחה.", "type": "free"}, {"id": "day_22_08", "date": "22.08", "day_name": "יום שבת", "title": "🍔 שבת חופש!", "details": "מנוחה וכיף.", "type": "free"}, {"id": "day_23_08", "date": "23.08", "day_name": "יום ראשון", "title": "📐 מתמטיקה בלבד (הסוף!)", "details": "<b>מתמטיקה:</b> עמוד 36 (העמוד האחרון בחוברת! בדיקה יסודית של כל התשובות הסופיות שלך לאורך כל 36 העמודים מול עמודי התשובות שבסוף, ותיקון טעויות אחרונות).<br>🎉 <b>מזל טוב! סיימת לחלוטין את כל 36 העמודים במתמטיקה!</b>", "type": "work"}]}, {"week_title": "שבוע 9: סגירות אחרונות באנגלית ומנוחה מוחלטת", "days": [{"id": "day_24_08", "date": "24.08", "day_name": "יום שני", "title": "🇬🇧 אנגלית בלבד (עתיד)", "details": "<b>אנגלית:</b> תרגול זמן עתיד (Future Simple). לחץ לפתיחת הקבצים אחרונים:<br><br><a href='worksheet_124784.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 7 (124784)</a><br><a href='worksheet_210934.pdf' target='_blank' style='display:inline-block; margin-top:5px; padding:6px 12px; background:#0ea5e9; color:white; text-decoration:none; border-radius:8px; font-weight:bold;'>📄 פתח קובץ 8 (210934)</a><br><br>🎉 <b>סיימת רשמית גם את העבודה באנגלית!</b>", "type": "work"}, {"id": "day_25_08", "date": "25.08", "day_name": "יום שלישי", "title": "🏖️ שבת חופש!", "details": "מנצלים את הימים האחרונים של הים והשמש!", "type": "free"}, {"id": "day_26_08", "date": "26.08", "day_name": "יום רביעי", "title": "📂 יום ארגון מסכם", "details": "<b>יום ארגון:</b> לוקחים קלסר יפה או תיקייה חצי-שקופה, ומסדרים בתוכה בצורה נקייה וחגיגית את שלוש העבודות המוכנות: דפי המתמטיקה הפתורים, דפי העבודה בעברית, וכל דפי העבודה והאנסינים באנגלית. הכל מוכן להגשה ל-5 יחידות!", "type": "work"}, {"id": "day_27_08", "date": "27.08", "day_name": "יום חמישי", "title": "🛹 שבת חופש!", "details": "יום חופש! בילוי עם חברים.", "type": "free"}, {"id": "day_28_08", "date": "28.08", "day_name": "יום שישי", "title": "🍿 שבת חופש!", "details": "סוף השבוע האחרון של החופש - תהנה מכל רגע!", "type": "free"}, {"id": "day_29_08", "date": "29.08", "day_name": "יום שבת", "title": "🌊 שבת חופש!", "details": "צוברים אנרגיות אחרונות.", "type": "free"}, {"id": "day_30_08", "date": "30.08", "day_name": "יום ראשון", "title": "🛌 שבת חופש מוחלט!", "details": "נחים, ישנים מוקדם וקמים רעננים.", "type": "free"}, {"id": "day_31_08", "date": "31.08", "day_name": "יום שני", "title": "🎒 הכנות אחרונות", "details": "רגועים ומכינים נפשית ל-1 בספטמבר, כשכל המטלות מאחוריך בגאווה!", "type": "free"}]}];
+
+        // Initialize from LocalStorage or empty object
+        let completedDays = JSON.parse(localStorage.getItem('summerHomeworkCompleted_5pts_v2')) || {};
+
+        function renderDashboard() {
+            const dashboard = document.getElementById('dashboard');
+            dashboard.innerHTML = '';
+
+            scheduleData.forEach(week => {
+                const weekSection = document.createElement('div');
+                weekSection.className = 'week-section';
+                
+                const weekTitle = document.createElement('div');
+                weekTitle.className = 'week-title';
+                weekTitle.innerText = week.week_title;
+                weekSection.appendChild(weekTitle);
+
+                const daysGrid = document.createElement('div');
+                daysGrid.className = 'days-grid';
+
+                week.days.forEach(day => {
+                    const isCompleted = completedDays[day.id] ? 'completed' : '';
+                    const dayCard = document.createElement('div');
+                    dayCard.className = `day-card type-${day.type} ${isCompleted}`;
+                    dayCard.id = `card-${day.id}`;
+                    dayCard.setAttribute('data-type', day.type);
+                    dayCard.onclick = () => openDayDetails(day);
+
+                    const checkedAttr = completedDays[day.id] ? 'checked' : '';
+
+                    dayCard.innerHTML = `
+                        <div>
+                            <div class="day-header">
+                                <span class="day-date">${day.date}</span>
+                                <span class="day-name">${day.day_name}</span>
+                            </div>
+                            <div class="day-title">${day.title}</div>
+                        </div>
+                        <div class="card-footer">
+                            <label class="checkbox-container" onclick="event.stopPropagation();">
+                                <input type="checkbox" ${checkedAttr} onchange="toggleDayCompletion('${day.id}', this.checked)">
+                                <span>בוצע</span>
+                            </label>
+                            <span class="hint-text">לחץ לפרטים &larr;</span>
+                        </div>
+                    `;
+                    daysGrid.appendChild(dayCard);
+                });
+
+                weekSection.appendChild(daysGrid);
+                dashboard.appendChild(weekSection);
+            });
+
+            updateProgressBar();
+        }
+
+        function toggleDayCompletion(dayId, isChecked) {
+            if (isChecked) {
+                completedDays[dayId] = true;
+                document.getElementById(`card-${dayId}`).classList.add('completed');
+            } else {
+                delete completedDays[dayId];
+                document.getElementById(`card-${dayId}`).classList.remove('completed');
+            }
+            localStorage.setItem('summerHomeworkCompleted_5pts_v2', JSON.stringify(completedDays));
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            let totalDays = 0;
+            scheduleData.forEach(w => totalDays += w.days.length);
+            
+            const completedCount = Object.keys(completedDays).length;
+            const percent = totalDays > 0 ? Math.round((completedCount / totalDays) * 100) : 0;
+            
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').innerText = percent + '% הושלם (' + completedCount + ' מתוך ' + totalDays + ' ימים)';
+        }
+
+        function filterDays(filterType, btnElement) {
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Filter cards
+            document.querySelectorAll('.day-card').forEach(card => {
+                const cardType = card.getAttribute('data-type');
+                if (filterType === 'all') {
+                    card.style.display = 'flex';
+                } else if (filterType === 'work') {
+                    if (cardType === 'work' || cardType === 'busy') {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                } else {
+                    if (cardType === filterType) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function openDayDetails(day) {
+            document.getElementById('modalDateTag').innerText = day.day_name + ' | ' + day.date;
+            document.getElementById('modalTitle').innerText = day.title;
+            document.getElementById('modalBody').innerHTML = day.details;
+            
+            const doneBtn = document.getElementById('modalDoneBtn');
+            if (completedDays[day.id]) {
+                doneBtn.innerText = 'סומן כבר כבוצע! בטל סימון';
+                doneBtn.style.background = '#ef4444';
+            } else {
+                doneBtn.innerText = 'סומן כבוצע! השלמתי את היום הזה';
+                doneBtn.style.background = '#10b981';
+            }
+
+            doneBtn.onclick = () => {
+                const currentStatus = completedDays[day.id];
+                toggleDayCompletion(day.id, !currentStatus);
+                
+                // Refresh modal state
+                const checkbox = document.querySelector('#card-' + day.id + ' input[type="checkbox"]');
+                if (checkbox) checkbox.checked = !currentStatus;
+                
+                toggleModal(false);
+            };
+
+            toggleModal(true);
+        }
+
+        function toggleModal(show) {
+            const overlay = document.getElementById('modalOverlay');
+            if (show) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        function closeModal(e) {
+            if (e.target.id === 'modalOverlay') {
+                toggleModal(false);
+            }
+        }
+
+        // Run on load
+        window.onload = () => {
+            renderDashboard();
+        };
+    </script>
+</body>
+</html>
